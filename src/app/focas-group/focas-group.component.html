@@ -1,0 +1,15 @@
+<ul nz-menu nzMode="inline">
+    <li nz-submenu nzTitle="{{item.title}}" *ngFor="let item of groupNodes">
+        <ul>
+            <ng-template ngFor let-node [ngForOf]="item.functionNodes">
+                <li nz-menu-item nzIcon="bars" (click)="menuClick(node)">
+                    <strong>
+                        {{node.name}}
+                    </strong>
+                    <span>{{node.Detail.Description}}</span>
+                </li>
+            </ng-template>
+
+        </ul>
+    </li>
+</ul>

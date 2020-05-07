@@ -1,0 +1,21 @@
+<form nz-form [nzLayout]="'inline'" [formGroup]="validateForm" (ngSubmit)="submitForm()">
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input CNC Ip!">
+            <nz-input-group nzPrefixIcon="gold">
+                <input formControlName="ip" nz-input placeholder="IP" [(ngModel)]="ip" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control nzErrorTip="Please input CNC Port!">
+            <nz-input-group nzPrefixIcon="number">
+                <input formControlName="port" nz-input type="number" [(ngModel)]="port" placeholder="Port" />
+            </nz-input-group>
+        </nz-form-control>
+    </nz-form-item>
+    <nz-form-item>
+        <nz-form-control>
+            <button nz-button nzType="primary" [disabled]="!validateForm.valid">Connect</button>
+        </nz-form-control>
+    </nz-form-item>
+</form>

@@ -1,0 +1,16 @@
+<!-- NG-ZORRO -->
+<div nz-row>
+    <div nz-col nzSpan="6">
+
+        <app-focas-group #focasGroup (groupSelectEvent)="groupSelectEvent($event)"></app-focas-group>
+
+    </div>
+    <div nz-col nzSpan="18">
+        <div style="text-align: center;">
+            <app-focas-connect (connectCnc)="connectCnc($event)"></app-focas-connect>
+        </div>
+        <div style="text-align: center;">
+            <app-focas-detail></app-focas-detail>
+        </div>
+    </div>
+</div>
