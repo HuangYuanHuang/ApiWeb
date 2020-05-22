@@ -1,7 +1,7 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain, ipcRenderer } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-
+import * as fs from 'fs'
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
@@ -10,7 +10,6 @@ function createWindow(): BrowserWindow {
 
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
-
   // Create the browser window.
   win = new BrowserWindow({
     x: 0,
@@ -78,6 +77,13 @@ try {
       createWindow();
     }
   });
+
+  ipcMain.on('saveConfig', (event, data) => {
+    //  console.log(data, fileName);
+    fs.writeFile("c:\\" + data.path, data.data, (err) => {
+      ipcRenderer.send('saveConfigResult', err);
+    });
+  })
 
 } catch (e) {
   // Catch Error

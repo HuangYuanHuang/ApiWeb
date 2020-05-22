@@ -8,8 +8,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class FocasConnectComponent implements OnInit {
   validateForm: FormGroup;
   @Output('connectCnc') connectCnc = new EventEmitter<any>();
-  private ip: string = "192.168.21.169";
-  private port: number = 8193;
+  ip: string = "192.168.21.169";
+  port: number = 8193;
   submitForm(): void {
     for (const i in this.validateForm.controls) {
       this.validateForm.controls[i].markAsDirty();

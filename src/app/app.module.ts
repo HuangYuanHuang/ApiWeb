@@ -1,11 +1,7 @@
 import 'reflect-metadata';
 import '../polyfills';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule, FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 
@@ -15,21 +11,15 @@ import { AppRoutingModule } from './app-routing.module';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-import { HomeModule } from './home/home.module';
-import { DetailModule } from './detail/detail.module';
 
 import { AppComponent } from './app.component';
-import { FocasGroupComponent } from './focas-group/focas-group.component';
-import { NzGridModule } from 'ng-zorro-antd/grid';
-import { NzMenuModule } from 'ng-zorro-antd/menu';
-import { NzLayoutModule } from 'ng-zorro-antd/layout';
-import { FocasConnectComponent } from './focas-connect/focas-connect.component';
-import { NzFormModule } from 'ng-zorro-antd/form';
-import { NzIconModule } from 'ng-zorro-antd/icon';
-import { NzInputModule } from 'ng-zorro-antd/input';
-import { NzButtonModule } from 'ng-zorro-antd/button';
-import { NzMessageModule } from 'ng-zorro-antd/message';
-import { FocasDetailComponent } from './focas-detail/focas-detail.component';
+import { HttpClient } from '@angular/common/http';
+import { FocasModule } from './focas/focas.module';
+import { LaserConfigModule } from './laser-config/laser-config.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CommonModule } from '@angular/common';
+
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
@@ -37,25 +27,12 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 }
 
 @NgModule({
-  declarations: [AppComponent, FocasGroupComponent, FocasConnectComponent, FocasDetailComponent],
+  declarations: [AppComponent],
   imports: [
+    CommonModule,
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    HttpClientModule,
-    CoreModule,
     SharedModule,
-    HomeModule,
-    DetailModule,
-    NzIconModule,
-    NzButtonModule,
-    NzInputModule,
-    NzLayoutModule,
-    NzGridModule,
-    NzMenuModule,
-    NzMessageModule,
-    NzFormModule,
     AppRoutingModule,
     TranslateModule.forRoot({
       loader: {

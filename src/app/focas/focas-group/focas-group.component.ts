@@ -1,6 +1,5 @@
 import { Component, OnInit, NgZone, EventEmitter, Output } from '@angular/core';
-import { NzMenuItemDirective } from 'ng-zorro-antd/menu';
-import { GroupModel, FunctionNode, FunctionDetail } from '../core/model/group-model';
+import { GroupModel, FunctionNode, FunctionDetail } from '../../core/model/group-model';
 @Component({
   selector: 'app-focas-group',
   templateUrl: './focas-group.component.html',

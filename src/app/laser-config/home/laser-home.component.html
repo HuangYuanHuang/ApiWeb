@@ -1,0 +1,25 @@
+<div class="main">
+    <nz-card nzTitle="工艺库" [nzExtra]="extraTemplate">
+        <nz-tabset>
+            <nz-tab nzTitle="切割">
+                <app-laser-process #cuttingLaser [nodes]="processNode[0].nodes"></app-laser-process>
+            </nz-tab>
+            <nz-tab nzTitle="穿孔">
+                <app-laser-process #piercingLaser [nodes]="processNode[1].nodes"></app-laser-process>
+
+            </nz-tab>
+            <nz-tab nzTitle="尖角切割">
+                <app-laser-process #edgeLaser [nodes]="processNode[2].nodes"></app-laser-process>
+
+            </nz-tab>
+            <nz-tab nzTitle="功率控制">
+                <app-laser-process #slopeLaser [nodes]="processNode[3].nodes"></app-laser-process>
+
+            </nz-tab>
+        </nz-tabset>
+    </nz-card>
+    <ng-template #extraTemplate>
+        <a (click)="showConfirm()">保存</a>
+    </ng-template>
+
+</div>
