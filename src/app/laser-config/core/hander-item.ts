@@ -2,7 +2,6 @@ export enum MataTypeEnum {
     Input,
     Combox
 }
-
 export class DataVailModel {
     public Id: number;
     public Name: string;
@@ -42,6 +41,7 @@ export class HeaderItemModel {
     PropType: string;
     InputType: string;
     Hide: string;
+    expand: boolean = false;
     constructor(propName: string, displayName: string, propType: string, readOnly: boolean, format: string, inputType: MataTypeEnum, inputFormat: boolean, index: number, vail: DataVailModel, mapkey: string, width: number, isHide: boolean) {
         this.PropName = propName;
         this.DisplayName = displayName;

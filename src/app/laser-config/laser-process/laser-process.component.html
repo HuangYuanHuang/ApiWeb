@@ -1,133 +1,190 @@
-<nz-table #editRowTable [nzData]="nodes" nzTableLayout="fixed" nzSize="small" [nzScroll]="{ x: '1400px' }" [nzShowPagination]="true" [nzHideOnSinglePage]='true'>
+<nz-table #editRowTable [nzData]="nodes" nzTableLayout="fixed" [nzShowPagination]="true" [nzHideOnSinglePage]='true'>
     <thead>
         <tr>
-            <!-- <th>编号</th> -->
-            <th nzWidth="140px">属性</th>
-            <th>显示名</th>
-            <th>类型</th>
-            <th>元数据</th>
-            <th>是否只读</th>
-            <th>宽度</th>
-            <th>MapKey</th>
-            <th>列格式</th>
-            <th>表单格式</th>
-            <th>默认值</th>
-            <th>最小值</th>
-            <th>最大值</th>
-            <th>数据类型</th>
-            <th>小数位</th>
-            <th>状态</th>
-            <th nzWidth="10%"></th>
+            <th nzWidth="5%"><a (click)="addNew()"><i nz-icon nzType="plus" nzTheme="outline"></i></a></th>
+            <th nzWidth="*">属性</th>
+            <th nzWidth="*">显示名</th>
+            <th nzWidth="7%">类型</th>
+            <th nzWidth="7%">元数据</th>
+            <th nzWidth="5%">只读</th>
+            <th nzWidth="5%">宽度</th>
+            <th nzWidth="8%">MapKey</th>
+            <th nzWidth="7%">列格式</th>
+            <th nzWidth="7%">表单格式</th>
+
+            <th nzWidth="7%">状态</th>
+            <th nzWidth="*"></th>
 
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let data of nodes;let i=index">
+        <ng-template ngFor let-data [ngForOf]="editRowTable.data" let-i="index">
 
-            <ng-container *ngIf="!editCache[data.Id].edit; else editTemplate">
-                <!-- <td>
-                    {{i+1}}
-                </td> -->
+            <tr>
+
+                <ng-container *ngIf="!editCache[data.Id].edit; else editTemplate">
+                    <td [(nzExpand)]="data.expand">{{i+1}}
+
+                    </td>
+                    <td>
+                        {{ data.PropName }}
+                        <!-- <nz-tag [nzColor]="'#108ee9'"> {{ data.PropName }}</nz-tag> -->
+                    </td>
+                    <td>{{ data.DisplayName }}</td>
+                    <td>{{ data.InputType }}</td>
+                    <td>{{ data.PropType }}</td>
+                    <td>
+                        <nz-tag *ngIf="data.IsReadOnly=='true'" nzColor="success"> 是</nz-tag>
+                        <nz-tag *ngIf="data.IsReadOnly=='false'" nzColor="warning"> 否</nz-tag>
+
+                    </td>
+                    <td>{{ data.Width }}</td>
+                    <td>
+                        <nz-tag *ngIf="data.MapKey" nzColor="success"> {{ data.MapKey }}</nz-tag>
+                    </td>
+                    <td>{{ data.Format }}</td>
+                    <td>
+                        <nz-tag *ngIf="data.InputFormat=='true'" nzColor="success"> 支持</nz-tag>
+                        <nz-tag *ngIf="data.InputFormat=='false'" nzColor="warning"> 不支持</nz-tag>
+                    </td>
+
+
+                    <td>
+                        <nz-tag *ngIf="data.Hide=='true'" nzColor="#f50"> 隐藏</nz-tag>
+                        <nz-tag *ngIf="data.Hide=='false'" nzColor="#87d068">显示 </nz-tag>
+                    </td>
+
+                    <td>
+                        <a (click)="startEdit(data.Id)">编辑</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+
+                        <a nz-popconfirm nzPopconfirmTitle="确定删除吗？" (nzOnConfirm)="remove(data.Id)"
+                            nzPopconfirmPlacement="topCenter">删除</a>
+
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-button nzType="link" nzDanger style="width: 20px;" (click)="sort(i,-1)"> <i nz-icon
+                                nzType="up-square" style=" color: #08c;" nzTheme="outline"></i></a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-button nzType="link" nzDanger style="width: 20px;" (click)="sort(i,1)"> <i nz-icon
+                                nzType="down-square" nzTheme="outline"></i></a>
+                    </td>
+                </ng-container>
+                <ng-template #editTemplate>
+                    <td [(nzExpand)]="data.expand">{{i+1}}
+
+                    </td>
+                    <td>
+                        <input type="text" nz-input [(ngModel)]="editCache[data.Id].data.PropName" />
+                        <!-- <nz-tag [nzColor]="'#108ee9'">{{ editCache[data.Id].data.PropName }}</nz-tag> -->
+                    </td>
+                    <td><input type="text" nz-input [(ngModel)]="editCache[data.Id].data.DisplayName" /></td>
+                    <td>
+                        <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.InputType"
+                            nzPlaceHolder="Choose">
+                            <nz-option nzValue="Input" nzLabel="Input"></nz-option>
+                            <nz-option nzValue="Combox" nzLabel="Combox"></nz-option>
+
+                        </nz-select>
+                    </td>
+                    <td>
+                        <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.PropType"
+                            nzPlaceHolder="Choose">
+                            <nz-option nzValue="Int32" nzLabel="Int32"></nz-option>
+                            <nz-option nzValue="double" nzLabel="Double"></nz-option>
+                            <nz-option nzValue="string" nzLabel="String"></nz-option>
+
+                        </nz-select>
+                    </td>
+                    <td>
+                        <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.IsReadOnly"
+                            nzPlaceHolder="Choose">
+                            <nz-option nzValue="true" nzLabel="是"></nz-option>
+                            <nz-option nzValue="false" nzLabel="否"></nz-option>
+
+                        </nz-select>
+                    </td>
+                    <td><input type="number" nz-input [(ngModel)]="editCache[data.Id].data.Width" /></td>
+                    <td>
+                        <input type="text" nz-input [(ngModel)]="editCache[data.Id].data.MapKey" />
+
+                    </td>
+                    <td><input type="text" nz-input [(ngModel)]="editCache[data.Id].data.Format" /></td>
+                    <td>
+                        <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.InputFormat"
+                            nzPlaceHolder="Choose">
+                            <nz-option nzValue="true" nzLabel="支持"></nz-option>
+                            <nz-option nzValue="false" nzLabel="不支持"></nz-option>
+
+                        </nz-select>
+                    </td>
+
+
+                    <td>
+                        <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.Hide"
+                            nzPlaceHolder="Choose">
+                            <nz-option nzValue="false" nzLabel="显示"></nz-option>
+                            <nz-option nzValue="true" nzLabel="隐藏"></nz-option>
+
+                        </nz-select>
+                    </td>
+                    <td>
+                        <a (click)="saveEdit(data.Id)" class="save">保存</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a nz-popconfirm nzPopconfirmTitle="取消保存吗？" (nzOnConfirm)="cancelEdit(data.Id)"
+                            nzPopconfirmPlacement="topCenter">取消</a>
+                    </td>
+                </ng-template>
+            </tr>
+            <tr [nzExpand]="data.expand">
+                <nz-table #innerTable [nzData]="[data.VailModel]" [nzShowPagination]="false">
+                    <thead>
+                        <tr>
+
+                            <th>数据类型</th>
+                            <th>默认值</th>
+                            <th>最小值</th>
+                            <th>最大值</th>
+                            <th>小数位</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+    <tbody>
+        <tr *ngFor="let item of innerTable.data">
+            <ng-container *ngIf="!editChildrenCache[data.Id].edit; else editChildrenTemplate">
+
                 <td>
-                    {{ data.PropName }}
-                    <!-- <nz-tag [nzColor]="'#108ee9'"> {{ data.PropName }}</nz-tag> -->
+                    <nz-tag *ngIf="item.IsDecimal=='true'" nzColor="processing"> 小数</nz-tag>
+                    <nz-tag *ngIf="item.IsDecimal=='false'" nzColor="default">整数 </nz-tag>
                 </td>
-                <td>{{ data.DisplayName }}</td>
-                <td>{{ data.InputType }}</td>
-                <td>{{ data.PropType }}</td>
+                <td>{{ item.DefaultValue }}</td>
+                <td>{{ item.Min }}</td>
+                <td>{{ item.Max }}</td>
+                <td>{{ item.DecimalDigit }}</td>
                 <td>
-                    <nz-tag *ngIf="data.IsReadOnly=='true'" nzColor="success"> 是</nz-tag>
-                    <nz-tag *ngIf="data.IsReadOnly=='false'" nzColor="warning"> 否</nz-tag>
+                    <a (click)="startChildrenEdit(data.Id)">编辑</a>
+
+
 
                 </td>
-                <td>{{ data.Width }}</td>
-                <td>
-                    <nz-tag *ngIf="data.MapKey" nzColor="success"> {{ data.MapKey }}</nz-tag>
-                </td>
-                <td>{{ data.Format }}</td>
-                <td>
-                    <nz-tag *ngIf="data.InputFormat=='true'" nzColor="success"> 支持</nz-tag>
-                    <nz-tag *ngIf="data.InputFormat=='false'" nzColor="warning"> 不支持</nz-tag>
-                </td>
-                <td>{{ data.VailModel?.DefaultValue }}</td>
-                <td>{{ data.VailModel?.Min }}</td>
-                <td>{{ data.VailModel?.Max }}</td>
-                <td>
-                    <nz-tag *ngIf="data.VailModel.IsDecimal=='true'" nzColor="processing"> 小数</nz-tag>
-                    <nz-tag *ngIf="data.VailModel.IsDecimal=='false'" nzColor="default">整数 </nz-tag>
-                </td>
-                <td>{{ data.VailModel?.DecimalDigit }}</td>
 
-                <td>
-                    <nz-tag *ngIf="data.Hide=='true'" nzColor="#f50"> 隐藏</nz-tag>
-                    <nz-tag *ngIf="data.Hide=='false'" nzColor="#87d068">显示 </nz-tag>
-                </td>
-
-                <td>
-                    <a (click)="startEdit(data.Id)">编辑</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-popconfirm nzTitle="确定删除吗" (nzOnConfirm)="remove(i)" nzDanger>删除</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-button nzType="link" nzDanger style="width: 20px;" (click)="sort(i,-1)"> <i nz-icon nzType="up-square" style=" color: #08c;" nzTheme="outline"></i></a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-button nzType="link" nzDanger style="width: 20px;" (click)="sort(i,1)"> <i nz-icon nzType="down-square" nzTheme="outline"></i></a>
-                </td>
             </ng-container>
-            <ng-template #editTemplate>
-
+            <ng-template #editChildrenTemplate>
                 <td>
-                    <input type="text" nz-input [(ngModel)]="editCache[data.Id].data.PropName" />
-                    <!-- <nz-tag [nzColor]="'#108ee9'">{{ editCache[data.Id].data.PropName }}</nz-tag> -->
-                </td>
-                <td><input type="text" nz-input [(ngModel)]="editCache[data.Id].data.DisplayName" /></td>
-                <td>
-                    <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.InputType" nzPlaceHolder="Choose">
-                        <nz-option nzValue="Input" nzLabel="Input"></nz-option>
-                        <nz-option nzValue="Combox" nzLabel="Combox"></nz-option>
-
-                    </nz-select>
-                </td>
-                <td>
-                    <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.PropType" nzPlaceHolder="Choose">
-                        <nz-option nzValue="Int32" nzLabel="Int32"></nz-option>
-                        <nz-option nzValue="double" nzLabel="Double"></nz-option>
-                        <nz-option nzValue="string" nzLabel="String"></nz-option>
-
-                    </nz-select>
-                </td>
-                <td>
-                    <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.IsReadOnly" nzPlaceHolder="Choose">
-                        <nz-option nzValue="true" nzLabel="是"></nz-option>
-                        <nz-option nzValue="false" nzLabel="否"></nz-option>
-
-                    </nz-select>
-                </td>
-                <td><input type="number" nz-input [(ngModel)]="editCache[data.Id].data.Width" /></td>
-                <td>
-                    <input type="text" nz-input [(ngModel)]="editCache[data.Id].data.MapKey" />
-
-                </td>
-                <td><input type="text" nz-input [(ngModel)]="editCache[data.Id].data.Format" /></td>
-                <td>
-                    <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.InputFormat" nzPlaceHolder="Choose">
-                        <nz-option nzValue="true" nzLabel="支持"></nz-option>
-                        <nz-option nzValue="false" nzLabel="不支持"></nz-option>
-
-                    </nz-select>
-                </td>
-                <td><input type="number" nz-input [(ngModel)]="editCache[data.Id].data.VailModel.DefaultValue" />
-                </td>
-                <td><input type="number" nz-input [(ngModel)]="editCache[data.Id].data.VailModel.Min" /></td>
-                <td><input type="number" nz-input [(ngModel)]="editCache[data.Id].data.VailModel.Max" /></td>
-                <td>
-                    <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.VailModel.IsDecimal" nzPlaceHolder="Choose">
+                    <nz-select style="width: 100%;" [(ngModel)]="editChildrenCache[data.Id].data.IsDecimal"
+                        nzPlaceHolder="Choose">
                         <nz-option nzValue="true" nzLabel="小数"></nz-option>
                         <nz-option nzValue="false" nzLabel="整数"></nz-option>
 
                     </nz-select>
                 </td>
+                <td><input type="number" nz-input [(ngModel)]="editChildrenCache[data.Id].data.DefaultValue" />
+                </td>
+                <td><input type="number" nz-input [(ngModel)]="editChildrenCache[data.Id].data.Min" /></td>
+                <td><input type="number" nz-input [(ngModel)]="editChildrenCache[data.Id].data.Max" /></td>
+
                 <td>
-                    <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.VailModel.DecimalDigit" nzPlaceHolder="Choose">
+                    <nz-select style="width: 100%;" [(ngModel)]="editChildrenCache[data.Id].data.DecimalDigit"
+                        nzPlaceHolder="Choose">
                         <nz-option nzValue="0" nzLabel="0"></nz-option>
                         <nz-option nzValue="1" nzLabel="1"></nz-option>
                         <nz-option nzValue="2" nzLabel="2"></nz-option>
@@ -137,21 +194,20 @@
                         <nz-option nzValue="6" nzLabel="6"></nz-option>
                     </nz-select>
                 </td>
-
                 <td>
-                    <nz-select style="width: 100%;" [(ngModel)]="editCache[data.Id].data.Hide" nzPlaceHolder="Choose">
-                        <nz-option nzValue="false" nzLabel="显示"></nz-option>
-                        <nz-option nzValue="true" nzLabel="隐藏"></nz-option>
-
-                    </nz-select>
-                </td>
-                <td>
-                    <a (click)="saveEdit(data.Id)" class="save">保存</a>
+                    <a (click)="saveChildrenEdit(data,data.Id)" class="save">保存</a>
                     <nz-divider nzType="vertical"></nz-divider>
-                    <a nz-popconfirm nzTitle="取消保存吗？" (nzOnConfirm)="cancelEdit(data.Id)">取消</a>
+                    <a nz-popconfirm nzPopconfirmTitle="取消保存吗？" (nzOnConfirm)="cancelChildrenEdit(data,data.Id)"
+                        nzPopconfirmPlacement="topCenter">取消</a>
+
                 </td>
             </ng-template>
+
         </tr>
+
     </tbody>
 </nz-table>
-<button nz-button nzType="primary" (click)="addNew()">新增</button>
+</tr>
+</ng-template>
+</tbody>
+</nz-table>

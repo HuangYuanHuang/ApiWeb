@@ -1,25 +1,31 @@
-<div class="main">
-    <nz-card nzTitle="工艺库" [nzExtra]="extraTemplate">
-        <nz-tabset>
-            <nz-tab nzTitle="切割">
-                <app-laser-process #cuttingLaser [nodes]="processNode[0].nodes"></app-laser-process>
-            </nz-tab>
-            <nz-tab nzTitle="穿孔">
-                <app-laser-process #piercingLaser [nodes]="processNode[1].nodes"></app-laser-process>
 
-            </nz-tab>
-            <nz-tab nzTitle="尖角切割">
-                <app-laser-process #edgeLaser [nodes]="processNode[2].nodes"></app-laser-process>
 
-            </nz-tab>
-            <nz-tab nzTitle="功率控制">
-                <app-laser-process #slopeLaser [nodes]="processNode[3].nodes"></app-laser-process>
+<div class="site-page-header-ghost-wrapper">
+    <nz-page-header [nzGhost]="false">
+        <nz-page-header-title>工艺库</nz-page-header-title>
+        <nz-page-header-subtitle>{{savePath}}</nz-page-header-subtitle>
+        <nz-page-header-extra>
 
-            </nz-tab>
-        </nz-tabset>
-    </nz-card>
-    <ng-template #extraTemplate>
-        <a (click)="showConfirm()">保存</a>
-    </ng-template>
+            <button nz-button nzType="primary" (click)="showConfirm()">保存</button>
+        </nz-page-header-extra>
+        <nz-page-header-content>
+            <nz-tabset>
+                <nz-tab nzTitle="切割">
+                    <app-laser-process #cuttingLaser [name]="'CuttingProcess.json'"></app-laser-process>
+                </nz-tab>
+                <nz-tab nzTitle="穿孔">
+                    <app-laser-process #piercingLaser [name]="'EdgeProcess.json'"></app-laser-process>
 
+                </nz-tab>
+                <nz-tab nzTitle="尖角切割">
+                    <app-laser-process #edgeLaser [name]="'PiercingProcess.json'"></app-laser-process>
+
+                </nz-tab>
+                <nz-tab nzTitle="功率控制">
+                    <app-laser-process #slopeLaser [name]="'SlopeProcess.json'"></app-laser-process>
+
+                </nz-tab>
+            </nz-tabset>
+        </nz-page-header-content>
+    </nz-page-header>
 </div>

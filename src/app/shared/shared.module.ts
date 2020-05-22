@@ -15,7 +15,6 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzMessageModule } from 'ng-zorro-antd/message';
-import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective],

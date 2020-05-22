@@ -1,13 +1,12 @@
-import { app, BrowserWindow, screen, ipcMain, ipcRenderer } from 'electron';
+import { app, BrowserWindow, screen, Menu } from 'electron';
+
 import * as path from 'path';
 import * as url from 'url';
-import * as fs from 'fs'
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
 function createWindow(): BrowserWindow {
-
   const electronScreen = screen;
   const size = electronScreen.getPrimaryDisplay().workAreaSize;
   // Create the browser window.
@@ -26,13 +25,13 @@ function createWindow(): BrowserWindow {
 
     require('devtron').install();
     win.webContents.openDevTools();
-
     require('electron-reload')(__dirname, {
       electron: require(`${__dirname}/node_modules/electron`)
     });
     win.loadURL('http://localhost:4200');
 
   } else {
+    Menu.setApplicationMenu(null);
     win.loadURL(url.format({
       pathname: path.join(__dirname, 'dist/index.html'),
       protocol: 'file:',
@@ -53,7 +52,7 @@ function createWindow(): BrowserWindow {
 
 try {
 
-  app.allowRendererProcessReuse = true;
+  app.allowRendererProcessReuse = false;
 
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
@@ -78,12 +77,6 @@ try {
     }
   });
 
-  ipcMain.on('saveConfig', (event, data) => {
-    //  console.log(data, fileName);
-    fs.writeFile("c:\\" + data.path, data.data, (err) => {
-      ipcRenderer.send('saveConfigResult', err);
-    });
-  })
 
 } catch (e) {
   // Catch Error
