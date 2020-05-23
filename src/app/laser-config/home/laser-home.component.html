@@ -1,28 +1,36 @@
-
-
 <div class="site-page-header-ghost-wrapper">
     <nz-page-header [nzGhost]="false">
-        <nz-page-header-title>工艺库</nz-page-header-title>
-        <nz-page-header-subtitle>{{savePath}}</nz-page-header-subtitle>
+        <nz-page-header-title>{{currentTab.title}}</nz-page-header-title>
+        <nz-page-header-subtitle>{{savePath}}\{{currentTab.fileName}}</nz-page-header-subtitle>
         <nz-page-header-extra>
+            <button nz-button nzType="default" (click)="changePath()">选择路径</button>
 
             <button nz-button nzType="primary" (click)="showConfirm()">保存</button>
         </nz-page-header-extra>
         <nz-page-header-content>
-            <nz-tabset>
+            <nz-tabset (nzSelectChange)="nzSelectChange($event)">
                 <nz-tab nzTitle="切割">
-                    <app-laser-process #cuttingLaser [name]="'CuttingProcess.json'"></app-laser-process>
+                    <ng-template nz-tab>
+                        <app-laser-process #cuttingLaser [name]="'CuttingProcess.json'" [path]="savePath"></app-laser-process>
+                    </ng-template>
                 </nz-tab>
                 <nz-tab nzTitle="穿孔">
-                    <app-laser-process #piercingLaser [name]="'EdgeProcess.json'"></app-laser-process>
+                    <ng-template nz-tab>
+                        <app-laser-process #piercingLaser [name]="'EdgeProcess.json'" [path]="savePath"></app-laser-process>
+                    </ng-template>
 
                 </nz-tab>
                 <nz-tab nzTitle="尖角切割">
-                    <app-laser-process #edgeLaser [name]="'PiercingProcess.json'"></app-laser-process>
+                    <ng-template nz-tab>
+                        <app-laser-process #edgeLaser [name]="'PiercingProcess.json'" [path]="savePath"></app-laser-process>
+                    </ng-template>
+
 
                 </nz-tab>
                 <nz-tab nzTitle="功率控制">
-                    <app-laser-process #slopeLaser [name]="'SlopeProcess.json'"></app-laser-process>
+                    <ng-template nz-tab>
+                        <app-laser-process #slopeLaser [name]="'SlopeProcess.json'" [path]="savePath"></app-laser-process>
+                    </ng-template>
 
                 </nz-tab>
             </nz-tabset>

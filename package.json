@@ -1,11 +1,11 @@
 {
-    "name": "angular-electron",
-    "version": "7.1.0",
-    "description": "Angular 9 with Electron (Typescript + SASS + Hot Reload)",
+    "name": "fanuc-laser",
+    "version": "2.1.0",
+    "description": "数据配置工具",
     "homepage": "https://github.com/maximegris/angular-electron",
     "author": {
-        "name": "Maxime GRIS",
-        "email": "maxime.gris@gmail.com"
+        "name": "BJ-FANUC",
+        "email": "huangyuanhuang@bj-fanuc.com.cn"
     },
     "keywords": [
         "angular",

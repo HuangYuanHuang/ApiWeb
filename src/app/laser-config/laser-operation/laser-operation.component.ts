@@ -20,12 +20,23 @@ export class LaserOperationComponent implements OnInit {
 
   maxId = 0;
   savePath = '';
+  nzScroll = { y: '1600px' };
+
   constructor(private modal: NzModalService, private electronService: ElectronService, private zone: NgZone) {
     const rootPath = path.dirname(electronService.remote.app.getPath('exe'));
     this.savePath = path.join(rootPath, 'Assets', 'MachineIO', 'MachineOperation.json');
+    // if (jQuery('body').width() < 1500) {
+    //   this.nzScroll.x = '1800px';
+
+    // }
   }
 
   ngOnInit(): void {
+
+    this.initData();
+  }
+  initData() {
+
     this.electronService.fs.readFile(this.savePath, (err, data) => {
       if (err) {
         new Notification('默认文件读取失败', { body: err.message });
@@ -47,7 +58,16 @@ export class LaserOperationComponent implements OnInit {
       }
 
     });
+  }
+  changePath() {
+    this.electronService.remote.dialog.showOpenDialog({ properties: ['openDirectory'] }).then(res => {
+      console.log(res.filePaths);
+      if (res.filePaths.length > 0) {
+        this.savePath = path.join(res.filePaths[0], 'MachineOperation.json');
+        this.initData();
 
+      }
+    })
   }
   addRow() {
     const operaNode = new OperationModel(++this.maxId, 'NewName' + this.maxId, '新标题');
@@ -163,6 +183,6 @@ export class LaserOperationComponent implements OnInit {
       }
 
     });
-   
+
   }
 }

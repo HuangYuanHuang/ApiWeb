@@ -14,20 +14,27 @@ import * as path from 'path';
 export class LaserProcessComponent implements OnInit {
   nodes: HeaderItemModel[] = [];
   @Input() name: string = '';
+  @Input() path = '';
   editCache: { [key: number]: { edit: boolean; data: HeaderItemModel } } = {};
   editChildrenCache: { [key: number]: { edit: boolean; data: DataVailModel } } = {};
   maxId = 0;
-  savePath = '';
-
+  isLoading = true;
+  nzScroll: any = {};
   constructor(private electron: ElectronService, private zone: NgZone) {
-    const rootPath = path.dirname(electron.remote.app.getPath('exe'));
-    this.savePath = path.join(rootPath, 'Assets', 'Process');
 
+    this.nzScroll.y = jQuery('body').height() - 300 + 'px';
+    if (jQuery('body').width() < 1500) {
+      this.nzScroll.x = '1800px';
+
+    }
   }
 
   ngOnInit(): void {
-    // this.nodes.push(new HeaderItemModel("NozzleKindCode", "割嘴类型", "Int32", false, "", MataTypeEnum.Combox, false, 0, new DataVailModel(0, 0, 100, false, 0), "NozzleKindCode", 0, false));
-    fs.readFile(path.join(this.savePath, this.name), (err, data) => {
+    this.isLoading = true;
+    this.initData();
+  }
+  initData() {
+    fs.readFile(path.join(this.path, this.name), (err, data) => {
       if (err) {
         new Notification('默认文件读取失败', { body: err.message });
         return;
@@ -40,20 +47,24 @@ export class LaserProcessComponent implements OnInit {
           this.nodes.forEach(d => { d.Id = this.maxId++; d.expand = false; });
 
           this.updateEditCache();
+          this.isLoading = false;
         });
 
       } catch (e) {
         // Catch Error
         // throw e;
         new Notification('文件格式出错', { body: e });
+        this.zone.run(() => {
+
+          this.isLoading = false;
+        });
 
       }
 
     });
   }
-
   saveFile() {
-    fs.writeFile(path.join(this.savePath, this.name), JSON.stringify(this.nodes), (err) => {
+    fs.writeFile(path.join(this.path, this.name), JSON.stringify(this.nodes), (err) => {
 
       if (err) {
         new Notification('文件保存失败', { body: err.message });
@@ -115,6 +126,11 @@ export class LaserProcessComponent implements OnInit {
     moveItemInArray(this.nodes, currentIndex, currentIndex + pre);
     let index = 0;
     this.nodes.forEach(d => d.Index = index++);
+    this.zone.run(() => {
+      this.nodes = [...this.nodes];
+
+    });
+
   }
   addNew() {
     const item = new HeaderItemModel("NewPropName", "", "Int32", true, "", MataTypeEnum.Input, false, 0, new DataVailModel(0, 0, 100, false, 0), "", 0, false);

@@ -1,19 +1,20 @@
-<nz-table #editRowTable [nzData]="nodes" nzTableLayout="fixed" [nzShowPagination]="true" [nzHideOnSinglePage]='true'>
+<nz-table #editRowTable [nzData]="nodes"  [nzShowPagination]="false" [nzHideOnSinglePage]='true'
+     [nzPageSize]='30' [nzScroll]="nzScroll"  nzTableLayout="fixed">
     <thead>
         <tr>
-            <th nzWidth="5%"><a (click)="addNew()"><i nz-icon nzType="plus" nzTheme="outline"></i></a></th>
+            <th nzWidth="80px" nzLeft><a (click)="addNew()"><i nz-icon nzType="plus" nzTheme="outline"></i></a></th>
             <th nzWidth="*">属性</th>
             <th nzWidth="*">显示名</th>
-            <th nzWidth="7%">类型</th>
+            <th nzWidth="8%">类型</th>
             <th nzWidth="7%">元数据</th>
             <th nzWidth="5%">只读</th>
             <th nzWidth="5%">宽度</th>
-            <th nzWidth="8%">MapKey</th>
+            <th nzWidth="150px" [nzEllipsis]>MapKey</th>
             <th nzWidth="7%">列格式</th>
             <th nzWidth="7%">表单格式</th>
 
             <th nzWidth="7%">状态</th>
-            <th nzWidth="*"></th>
+            <th nzWidth="250px"></th>
 
         </tr>
     </thead>
@@ -23,7 +24,7 @@
             <tr>
 
                 <ng-container *ngIf="!editCache[data.Id].edit; else editTemplate">
-                    <td [(nzExpand)]="data.expand">{{i+1}}
+                    <td [(nzExpand)]="data.expand" nzLeft>{{i+1}}
 
                     </td>
                     <td>
@@ -70,7 +71,7 @@
                     </td>
                 </ng-container>
                 <ng-template #editTemplate>
-                    <td [(nzExpand)]="data.expand">{{i+1}}
+                    <td [(nzExpand)]="data.expand" nzLeft>{{i+1}}
 
                     </td>
                     <td>

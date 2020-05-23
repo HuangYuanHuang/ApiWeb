@@ -3,11 +3,12 @@
         <nz-page-header-title>手动模块</nz-page-header-title>
         <nz-page-header-subtitle>{{savePath}}</nz-page-header-subtitle>
         <nz-page-header-extra>
+            <button nz-button nzType="default" (click)="changePath()">选择路径</button>
 
             <button nz-button nzType="primary" (click)="showConfirm()">保存</button>
         </nz-page-header-extra>
         <nz-page-header-content>
-            <nz-table #nestedTable [nzData]="nodes" [nzHideOnSinglePage]='true'>
+            <nz-table #nestedTable [nzData]="nodes" [nzHideOnSinglePage]='true'  >
                 <thead>
                     <tr>
                         <th> <a (click)="addRow()"><i nz-icon nzType="plus" nzTheme="outline"></i></a></th>
