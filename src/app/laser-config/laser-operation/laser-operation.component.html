@@ -8,7 +8,7 @@
             <button nz-button nzType="primary" (click)="showConfirm()">保存</button>
         </nz-page-header-extra>
         <nz-page-header-content>
-            <nz-table #nestedTable [nzData]="nodes" [nzHideOnSinglePage]='true'  >
+            <nz-table #nestedTable [nzData]="nodes" [nzHideOnSinglePage]='true'>
                 <thead>
                     <tr>
                         <th> <a (click)="addRow()"><i nz-icon nzType="plus" nzTheme="outline"></i></a></th>
@@ -31,8 +31,7 @@
                                     <nz-divider nzType="vertical"></nz-divider>
                                     <a (click)="addChildren(data)">新增</a>
                                     <nz-divider nzType="vertical"></nz-divider>
-                                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？" (nzOnConfirm)="removeParent(data.Id)"
-                                        nzPopconfirmPlacement="topCenter">删除</a>
+                                    <a nz-popconfirm nzPopconfirmTitle="确定删除吗？" (nzOnConfirm)="removeParent(data.Id)" nzPopconfirmPlacement="topCenter">删除</a>
 
                                 </td>
 
@@ -49,8 +48,7 @@
                                     <a (click)="saveEdit(data.Id)" class="save">保存</a>
                                     <nz-divider nzType="vertical"></nz-divider>
 
-                                    <a nz-popconfirm nzPopconfirmTitle="取消保存吗？" (nzOnConfirm)="cancelEdit(data.Id)"
-                                        nzPopconfirmPlacement="topCenter">取消</a>
+                                    <a nz-popconfirm nzPopconfirmTitle="取消保存吗？" (nzOnConfirm)="cancelEdit(data.Id)" nzPopconfirmPlacement="topCenter">取消</a>
 
                                 </td>
                             </ng-template>
@@ -63,6 +61,7 @@
                                         <th>ID</th>
                                         <th>标题</th>
                                         <th>数据类型</th>
+                                        <th>只读</th>
                                         <th>默认值</th>
                                         <th>最小值</th>
                                         <th>最大值</th>
@@ -70,78 +69,84 @@
                                         <th>操作</th>
                                     </tr>
                                 </thead>
-                <tbody>
-                    <tr *ngFor="let item of innerTable.data">
-                        <ng-container *ngIf="!editChildrenCache[item.Id].edit; else editChildrenTemplate">
-                            <td>{{ item.Name }}</td>
-                            <td>{{ item.Title }}</td>
-                            <td>
-                                <nz-tag *ngIf="item.IsDecimal=='true'" nzColor="processing"> 小数</nz-tag>
-                                <nz-tag *ngIf="item.IsDecimal=='false'" nzColor="default">整数 </nz-tag>
-                            </td>
-                            <td>{{ item.DefaultValue }}</td>
-                            <td>{{ item.Min }}</td>
-                            <td>{{ item.Max }}</td>
-                            <td>{{ item.DecimalDigit }}</td>
-                            <td>
-                                <a (click)="startChildrenEdit(item.Id)">编辑</a>
+                                <tbody>
+                                    <tr *ngFor="let item of innerTable.data">
+                                        <ng-container *ngIf="!editChildrenCache[item.Id].edit; else editChildrenTemplate">
+                                            <td>{{ item.Name }}</td>
+                                            <td>{{ item.Title }}</td>
+                                            <td>
+                                                <nz-tag *ngIf="item.IsDecimal=='true'" nzColor="processing"> 小数</nz-tag>
+                                                <nz-tag *ngIf="item.IsDecimal=='false'" nzColor="default">整数 </nz-tag>
+                                            </td>
+                                            <td>
+                                                <nz-tag *ngIf="item.IsReadOnly=='true'" nzColor="success"> 是</nz-tag>
+                                                <nz-tag *ngIf="item.IsReadOnly=='false'" nzColor="warning"> 否</nz-tag>
 
-                                <nz-divider nzType="vertical"></nz-divider>
-                                <a nz-popconfirm nzPopconfirmTitle="确定删除吗？" (nzOnConfirm)="removeChildren(data,item.Id)"
-                                    nzPopconfirmPlacement="topCenter">删除</a>
+                                            </td>
+                                            <td>{{ item.DefaultValue }}</td>
+                                            <td>{{ item.Min }}</td>
+                                            <td>{{ item.Max }}</td>
+                                            <td>{{ item.DecimalDigit }}</td>
+                                            <td>
+                                                <a (click)="startChildrenEdit(item.Id)">编辑</a>
 
-                            </td>
+                                                <nz-divider nzType="vertical"></nz-divider>
+                                                <a nz-popconfirm nzPopconfirmTitle="确定删除吗？" (nzOnConfirm)="removeChildren(data,item.Id)" nzPopconfirmPlacement="topCenter">删除</a>
 
-                        </ng-container>
-                        <ng-template #editChildrenTemplate>
-                            <td><input type="text" nz-input [(ngModel)]="editChildrenCache[item.Id].data.Name" />
-                            </td>
-                            <td><input type="text" nz-input [(ngModel)]="editChildrenCache[item.Id].data.Title" />
-                            </td>
-                            <td>
-                                <nz-select style="width: 100%;" [(ngModel)]="editChildrenCache[item.Id].data.IsDecimal"
-                                    nzPlaceHolder="Choose">
-                                    <nz-option nzValue="true" nzLabel="小数"></nz-option>
-                                    <nz-option nzValue="false" nzLabel="整数"></nz-option>
+                                            </td>
 
-                                </nz-select>
-                            </td>
-                            <td><input type="number" nz-input
-                                    [(ngModel)]="editChildrenCache[item.Id].data.DefaultValue" />
-                            </td>
-                            <td><input type="number" nz-input [(ngModel)]="editChildrenCache[item.Id].data.Min" /></td>
-                            <td><input type="number" nz-input [(ngModel)]="editChildrenCache[item.Id].data.Max" /></td>
+                                        </ng-container>
+                                        <ng-template #editChildrenTemplate>
+                                            <td><input type="text" nz-input [(ngModel)]="editChildrenCache[item.Id].data.Name" />
+                                            </td>
+                                            <td><input type="text" nz-input [(ngModel)]="editChildrenCache[item.Id].data.Title" />
+                                            </td>
+                                            <td>
+                                                <nz-select style="width: 100%;" [(ngModel)]="editChildrenCache[item.Id].data.IsDecimal" nzPlaceHolder="Choose">
+                                                    <nz-option nzValue="true" nzLabel="小数"></nz-option>
+                                                    <nz-option nzValue="false" nzLabel="整数"></nz-option>
 
-                            <td>
-                                <nz-select style="width: 100%;"
-                                    [(ngModel)]="editChildrenCache[item.Id].data.DecimalDigit" nzPlaceHolder="Choose">
-                                    <nz-option nzValue="0" nzLabel="0"></nz-option>
-                                    <nz-option nzValue="1" nzLabel="1"></nz-option>
-                                    <nz-option nzValue="2" nzLabel="2"></nz-option>
-                                    <nz-option nzValue="3" nzLabel="3"></nz-option>
-                                    <nz-option nzValue="4" nzLabel="4"></nz-option>
-                                    <nz-option nzValue="5" nzLabel="5"></nz-option>
-                                    <nz-option nzValue="6" nzLabel="6"></nz-option>
-                                </nz-select>
-                            </td>
-                            <td>
-                                <a (click)="saveChildrenEdit(data,item.Id)" class="save">保存</a>
-                                <nz-divider nzType="vertical"></nz-divider>
+                                                </nz-select>
+                                            </td>
+                                            <td>
+                                                <nz-select style="width: 100%;" [(ngModel)]="editChildrenCache[item.Id].data.IsReadOnly" nzPlaceHolder="Choose">
+                                                    <nz-option nzValue="true" nzLabel="是"></nz-option>
+                                                    <nz-option nzValue="false" nzLabel="否"></nz-option>
 
-                                <a nz-popconfirm nzPopconfirmTitle="取消保存吗？"
-                                    (nzOnConfirm)="cancelChildrenEdit(data,item.Id)"
-                                    nzPopconfirmPlacement="topCenter">取消</a>
+                                                </nz-select>
+                                            </td>
+                                            <td><input type="number" nz-input [(ngModel)]="editChildrenCache[item.Id].data.DefaultValue" />
+                                            </td>
+                                            <td><input type="number" nz-input [(ngModel)]="editChildrenCache[item.Id].data.Min" /></td>
+                                            <td><input type="number" nz-input [(ngModel)]="editChildrenCache[item.Id].data.Max" /></td>
 
-                            </td>
-                        </ng-template>
+                                            <td>
+                                                <nz-select style="width: 100%;" [(ngModel)]="editChildrenCache[item.Id].data.DecimalDigit" nzPlaceHolder="Choose">
+                                                    <nz-option nzValue="0" nzLabel="0"></nz-option>
+                                                    <nz-option nzValue="1" nzLabel="1"></nz-option>
+                                                    <nz-option nzValue="2" nzLabel="2"></nz-option>
+                                                    <nz-option nzValue="3" nzLabel="3"></nz-option>
+                                                    <nz-option nzValue="4" nzLabel="4"></nz-option>
+                                                    <nz-option nzValue="5" nzLabel="5"></nz-option>
+                                                    <nz-option nzValue="6" nzLabel="6"></nz-option>
+                                                </nz-select>
+                                            </td>
+                                            <td>
+                                                <a (click)="saveChildrenEdit(data,item.Id)" class="save">保存</a>
+                                                <nz-divider nzType="vertical"></nz-divider>
 
-                    </tr>
+                                                <a nz-popconfirm nzPopconfirmTitle="取消保存吗？" (nzOnConfirm)="cancelChildrenEdit(data,item.Id)" nzPopconfirmPlacement="topCenter">取消</a>
 
+                                            </td>
+                                        </ng-template>
+
+                                    </tr>
+
+                                </tbody>
+                            </nz-table>
+                        </tr>
+                    </ng-template>
                 </tbody>
-            </nz-table>
-            </tr>
-            </ng-template>
-            </tbody>
             </nz-table>
         </nz-page-header-content>
     </nz-page-header>

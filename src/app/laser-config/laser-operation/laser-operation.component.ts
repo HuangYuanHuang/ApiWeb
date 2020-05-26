@@ -71,7 +71,7 @@ export class LaserOperationComponent implements OnInit {
   }
   addRow() {
     const operaNode = new OperationModel(++this.maxId, 'NewName' + this.maxId, '新标题');
-    const vailNode = new DataVailModel(0, 0, 100, false, 0);
+    const vailNode = new DataVailModel(0, 0, 100, true, 3);
     vailNode.Id = 100 + this.maxId;
     vailNode.Title = "Title" + this.maxId;
     vailNode.Name = "Name" + this.maxId;
@@ -113,7 +113,7 @@ export class LaserOperationComponent implements OnInit {
   }
   addChildren(node: OperationModel) {
     this.maxId++;
-    const vailNode = new DataVailModel(0, 0, 100, false, 0);
+    const vailNode = new DataVailModel(0, 0, 100, true, 3);
     vailNode.Id = 200 + this.maxId;
     vailNode.Title = "Title" + this.maxId;
     vailNode.Name = "Name" + this.maxId;
