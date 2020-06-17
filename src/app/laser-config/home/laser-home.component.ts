@@ -29,8 +29,8 @@ export class LaserHomeComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataCache[0] = { data: { fileName: 'CuttingProcess.json', title: '切割', index: 0, component: this.cuttingLaser } };
-    this.dataCache[1] = { data: { fileName: 'EdgeProcess.json', title: '穿孔', index: 1, component: this.piercingLaser } };
-    this.dataCache[2] = { data: { fileName: 'PiercingProcess.json', title: '尖角切割', index: 2, component: this.edgeLaser } };
+    this.dataCache[1] = { data: { fileName: 'PiercingProcess.json', title: '穿孔', index: 1, component: this.piercingLaser } };
+    this.dataCache[2] = { data: { fileName: 'EdgeProcess.json', title: '尖角切割', index: 2, component: this.edgeLaser } };
     this.dataCache[3] = { data: { fileName: 'SlopeProcess.json', title: '功率控制', index: 3, component: this.slopeLaser } };
     this.currentTab = this.dataCache[0].data;
   }
