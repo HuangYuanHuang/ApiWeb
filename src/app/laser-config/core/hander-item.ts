@@ -11,6 +11,7 @@ export class DataVailModel {
     public Max: number;
     public IsDecimal: string;
     IsReadOnly = 'false';
+    public IsNull:string='true';
     public DecimalDigit: string;
     constructor(defaultValue: any, min: number, max: number, isDecimal: boolean, digit: number) {
         this.DefaultValue = defaultValue;
